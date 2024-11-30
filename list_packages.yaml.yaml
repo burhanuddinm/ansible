@@ -1,0 +1,21 @@
+---
+- name: Check if a package is installed
+  hosts: all
+  become: yes
+  vars:
+    package_name: "{{ check_input }}"  # Define a variable to hold the package name
+  tasks:
+    - name: Check if the package is installed
+      command: rpm -q {{ package_name }}
+      register: package_check
+      ignore_errors: yes
+
+    - name: Print message if the package is installed
+      debug:
+        msg: "{{ package_name }} package is already installed."
+      when: package_check.rc == 0
+
+    - name: Print message if the package is not installed
+      debug:
+        msg: "{{ package_name }} package is not installed."
+      when: package_check.rc != 0

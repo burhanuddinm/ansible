@@ -1,0 +1,12 @@
+
+
+ansible-playbook -i inventory_file list_packages.yaml -e "check_input=httpd"
+
+
+ansible all -m command -a "rpm -q ansible" -i inventory2.ini --become
+
+
+ansible all -m yum -a "name=httpd state=present" -i inventory2.ini --become --forks=1
+
+
+ansible -i /Data/Fedora/inventory2.ini all -m command -a 'ip r l'
